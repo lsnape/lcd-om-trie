@@ -8,7 +8,7 @@
     [compojure.route :refer [resources]]
     [hiccup.page :refer [html5 include-js]]
     [hiccup.element :refer [javascript-tag]]
-    ))
+    [dojo.trie :refer [add-to-trie words in-trie? is-prefix? prefixes]]))
 
 (defn index-page []
   (html5
@@ -22,13 +22,16 @@
       (javascript-tag "goog.require('dojo.client');") ; only required in dev build
       ]))
 
+(defn sample-words [n]
+  (take n (shuffle words)))
+
 (defn ws-handler [req]
   (with-channel req ws
     (println "Opened connection from" (:remote-addr req))
     (go-loop []
       (when-let [{:keys [message]} (<! ws)]
-        (println "Message received:" message)
-        (>! ws (format "You said: '%s' at %s." message (java.util.Date.)))
+        (doseq [word (sample-words 1000)]
+          (>! ws word))
         (recur)))))
 
 (defn app-routes []
@@ -42,3 +45,4 @@
 (defn webapp [] 
   (-> (app-routes)
       api))
+
