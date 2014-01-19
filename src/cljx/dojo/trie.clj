@@ -1,16 +1,5 @@
 (ns dojo.trie
-  (:require [clojure.string :refer [lower-case split-lines blank?]]
-            [clojure.pprint :refer [pprint]]
-            [clojure.walk :refer [walk]]))
-
-(defn file-path [path]
-  (str "resources/" path))
-
-(def words
-  (map lower-case
-       (->> (file-path "word-list.txt")
-       slurp
-       split-lines)))
+  (:require [clojure.string :refer [blank?]]))
 
 (defn in?
   "true if seq contains elem"
@@ -60,4 +49,5 @@
 (defn auto-complete [trie prefix]
   (trie-to-vector (prefixes trie prefix)))
 
-; (auto-complete (trie words) "st")
+; usage
+; (take 10 (auto-complete (trie words) "sta"))

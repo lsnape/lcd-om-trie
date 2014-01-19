@@ -1,5 +1,5 @@
 (ns dojo.core
-  (:require 
+  (:require
     [ring.util.response :refer [response]]
     [chord.http-kit :refer [with-channel]]
     [clojure.core.async :refer [<! >! put! close! go-loop]]
@@ -8,13 +8,14 @@
     [compojure.route :refer [resources]]
     [hiccup.page :refer [html5 include-js]]
     [hiccup.element :refer [javascript-tag]]
-    [dojo.trie :refer [add-to-trie words in-trie? is-prefix? prefixes]]))
+    [dojo.words :refer [words]]
+    [dojo.trie :refer [add-to-trie]]))
 
 (defn index-page []
   (html5
    [:head
-    [:title "London Clojure Dojo January 2014"]]
-    [:body 
+    [:title "Prefix Tree Demo"]]
+    [:body
       [:div#app]
       (include-js "//fb.me/react-0.8.0.js") ; only required in dev build
       (include-js "/out/goog/base.js") ; only required in dev build
@@ -42,7 +43,10 @@
     (resources "/out" {:root "out"}) ; only required in dev build
     ))
 
-(defn webapp [] 
+(defn webapp []
   (-> (app-routes)
       api))
 
+(def coll ["a" "b" "c"])
+
+(map #(interleave [:message] %) coll)

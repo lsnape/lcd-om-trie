@@ -23,7 +23,8 @@
 
   :frodo/config-resource "config/dojo.edn"
 
-  :source-paths ["src/clj"]
+  :source-paths ["src/clj"
+                 "src/cljx"]
 
   :aliases {"dev" ["pdo" "cljsbuild" "auto" "dev," "frodo"]
             "prod" ["pdo" "cljsbuild" "once" "release," "frodo"]}
@@ -31,8 +32,10 @@
   :resource-paths ["resources" "target/resources"]
 
   :cljsbuild { 
+    :crossovers [dojo.trie]
     :builds [{:id "dev"
               :source-paths ["src/cljs"]
+              :crossover-path "src/cljx"
               :compiler {
                 :output-to "target/resources/js/dojo.js"
                 :output-dir "target/resources/out"
@@ -41,6 +44,7 @@
 
               {:id "release"
               :source-paths ["src/cljs"]
+              :crossover-path "src/cljx"
               :compiler {
                 :output-to "target/resources/js/dojo.js"
                 :optimizations :advanced
